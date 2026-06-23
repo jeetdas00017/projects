@@ -48,6 +48,7 @@ with DAG(
         )
 
     run_staging = BashOperator(
+        
         task_id="run_staging",
         bash_command=f"""
         set -e
@@ -55,7 +56,7 @@ with DAG(
         dbt run --select stage --profiles-dir {DBT_PROFILES_DIR}
         """,
     )
-    
+
 
     run_intermediate = BashOperator(
         task_id="run_intermediate",
