@@ -48,31 +48,30 @@ with DAG(
         )
 
     run_staging = BashOperator(
-        
-        task_id="run_staging",
-        bash_command=f"""
-        set -e
-        cd {DBT_PROJECT_DIR}
-        dbt run --select stage --profiles-dir {DBT_PROFILES_DIR}
-        """,
-    )
+    task_id="run_staging",
+    bash_command=f"""
+    set -e
+    cd {DBT_PROJECT_DIR}
+    dbt run --select stage --target snowflake --profiles-dir {DBT_PROFILES_DIR}
+    """,
+)
 
 
-    run_intermediate = BashOperator(
-        task_id="run_intermediate",
-        bash_command=f"""
-        set -e
-        cd {DBT_PROJECT_DIR}
-        dbt run --select int --profiles-dir {DBT_PROFILES_DIR}
-        """,
-    )
+    # run_intermediate = BashOperator(
+    #     task_id="run_intermediate",
+    #     bash_command=f"""
+    #     set -e
+    #     cd {DBT_PROJECT_DIR}
+    #     dbt run --select int --target snowflake --profiles-dir {DBT_PROFILES_DIR}
+    #     """,
+    # )
 
     run_snapshot = BashOperator(
         task_id="run_snapshot",
         bash_command=f"""
         set -e
         cd {DBT_PROJECT_DIR}
-        dbt run --select snapshot --profiles-dir {DBT_PROFILES_DIR}
+        dbt snapshot --target snowflake --profiles-dir {DBT_PROFILES_DIR}
         """,
     )
 
@@ -81,7 +80,7 @@ with DAG(
         bash_command=f"""
         set -e
         cd {DBT_PROJECT_DIR}
-        dbt run --select marts.dimension --profiles-dir {DBT_PROFILES_DIR}
+        dbt run --select marts.dimension --target snowflake --profiles-dir {DBT_PROFILES_DIR}
         """,
     )
 
@@ -90,7 +89,7 @@ with DAG(
         bash_command=f"""
         set -e
         cd {DBT_PROJECT_DIR}
-        dbt run --select marts.fact --profiles-dir {DBT_PROFILES_DIR}
+        dbt run --select marts.fact --target snowflake --profiles-dir {DBT_PROFILES_DIR}
         """,
     )
 
@@ -99,7 +98,7 @@ with DAG(
         bash_command=f"""
         set -e
         cd {DBT_PROJECT_DIR}
-        dbt test --profiles-dir {DBT_PROFILES_DIR}
+        dbt test --target snowflake --profiles-dir {DBT_PROFILES_DIR}
         """,
     )
 
@@ -108,7 +107,7 @@ with DAG(
         >> dbt_packages   
         >> run_staging
         >> run_snapshot
-        >> run_intermediate
+        #>> run_intermediate
         >> run_dimensions
         >> run_facts
         >> dbt_test

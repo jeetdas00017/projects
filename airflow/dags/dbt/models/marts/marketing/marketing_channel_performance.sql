@@ -25,7 +25,7 @@ orders_by_customer as (
 )
 
 select
-    c.acquisition_channel,
+    1 as acquisition_channel,
     count(distinct c.customer_id)                                                  as total_customers,
     sum(coalesce(o.total_orders, 0))                                               as total_orders,
     sum(coalesce(o.total_revenue, 0))                                              as total_revenue,

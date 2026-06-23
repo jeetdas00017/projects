@@ -38,8 +38,6 @@ scored as (
 select
     c.customer_id,
     c.email,
-    c.acquisition_channel,
-    c.country,
     c.signup_date,
     s.last_order_date,
     s.recency_days,

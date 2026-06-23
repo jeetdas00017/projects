@@ -17,8 +17,8 @@ clean-targets:
   - "dbt_packages"
 
 models:
-
-    staging:
+  enterprise_dwh:
+    stage:
       +schema: stage
       +materialized: view
 
@@ -41,5 +41,5 @@ models:
 
 snapshots:
   enterprise_dwh:
-    +target_schema: snapshots
+    +target_schema: warehouse
     +strategy: timestamp
